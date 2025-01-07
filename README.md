@@ -1,5 +1,6 @@
 # Checklist++
-Checklist++ is an Esolang in which you write some tasks in sentences as tasks on a To-Do list and then finally check them all (Execute)
+Checklist++ is an Esolang in which you write some tasks in sentences as tasks on a To-Do list and then finally check them all (Execute).
+(Esolangs are usually funny but ig this ones more serious than funny but dw I'll make a funny one sometime when I'm bored :P)
 
 ## Structure:
 - `{NAME_OF_THE_LIST}` Creates a new "Checklist" (much like a Class).
@@ -22,8 +23,9 @@ Checklist++ is an Esolang in which you write some tasks in sentences as tasks on
 ### Info Exchange:
 These command are used for information exchange with Entities
 - `# radio <information> to <reciever>` - A special command that communicates something to an entity (It has a lot of uses)
-- `# ask <someone> for <information>` - A special command that requests some entity to radio them some information
-Example Entity:
+- `# beg <someone> for <information>` - A special command that requests some entity to radio them some information
+  
+### Example Entity:
 - IO - The input-output framework
 - Web - The Internet surfing framework
 - Screen - GUI Framework
@@ -41,16 +43,16 @@ Whatever task when checked, if it has a result which is not specifically passed 
 
 ### Input/Output:
 - `# radio "Hello World" to IO` - Prints "Hello World" to the Terminal
-- `# ask IO for "What is your name"` - Asks for input from the user
-If the input is not specifically stored into "it"
+- `# beg IO for "What is your name"` - Asks for input from the user. The input will get stored into "it"
 
 ### Mathematical:
 - `# add (number1) and (number2)` - Adds two numbers 1 and 2 (Any number of numbers could be added by separating them with `and`)
 - `# subtract (number1) and (number2)` - Subtracts second number from first number (Any number of numbers could be subtracted from the previous by separating them with `and`)
 - `# multiply (number1) and (number2)` - Multiplies two numbers 1 and 2 (Any number of numbers could be multiplied by separating them with `and`)
 - `# divide (number1) and (number2)` - Divides first number by second number and returns the quotient
-- `# modulus (number1) and (number2)` - Divides first number by second number and returns the remainder
-Any of these performed independantly without being stored into any specific variable, will get stored to "it"
+- `# modulus (number1) and (number2)` - Divides first number by second number and returns the remainder.
+
+Any of these performed independently without being stored into any specific variable, will get stored to "it"
 
 ### If-Else:
 Since tasks are single lined, for the ease of Interpreting the code, if.. else if.. Tasks have to be separated into different checklists.
