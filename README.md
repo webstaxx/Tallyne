@@ -1,11 +1,15 @@
 # Tallyne
-Tallyne is an Esolang in which you write some tasks in sentences as tasks on a To-Do list and then finally tally them all (Execute).
-(Esolangs are usually funny but ig this ones more serious than funny but dw I'll make a funny one sometime when I'm bored :P)
+
+Tallyne is a minimal, task-based language inspired by the structure of a To-Do list. Code is written as single-line tasks under named Routines, then tallied (executed) step by step.
+
+It combines the simplicity of Procedural Programming with the modularity of Object-Oriented Programming, letting you treat each system or hardware part as its own entity.
+
+Designed for clarity, control, and real-world logic—perfect for robotics and automation.
 
 ## Structure:
 - `{NAME_OF_THE_LIST}` Creates a new "Routine" (much like a Class).
-- Each "task" (a statement) is written in a bullet `#` under a Routine.
-- Any line not prefixed with # is treated as a comment.
+- Each "task" (a statement) is prefixed with a bullet `#` under a Routine.
+- Any line not prefixed with `#` is treated as a comment.
 - `<#>` marks the end of the Routine.
 - The `{TASKS}` Routine is executed by default.
 - Tallyne is not case sensitive which means "HELLO" and "hello" are treated same.
@@ -29,9 +33,9 @@ These command are used for information exchange with Entities
 - IO - The input-output framework
 - Web - The Internet surfing framework
 - Screen - GUI Framework
-- Hard - Hardware/Robotics framework
 - {TASKS} - Main Routine
-- Any new Routine created
+- Any custom-defined Routine
+- Any connected hardware component (e.g., LeftMotor, IRSensor, Camera, UltrasonicSensor, etc.)
 
 ### Storage:
 - `# create "variable_name"` - Create a variable, its default data type will be "VALUE"
