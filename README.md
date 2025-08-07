@@ -5,7 +5,7 @@ Tallyne is an Esolang in which you write some tasks in sentences as tasks on a T
 ## Structure:
 - `{NAME_OF_THE_LIST}` Creates a new "Routine" (much like a Class).
 - Each "task" (a statement) is written in a bullet `#` under a Routine.
-- Whatever not written in a bullet is considered a comment :|
+- Any line not prefixed with # is treated as a comment.
 - `<#>` marks the end of the Routine.
 - The `{TASKS}` Routine is executed by default.
 - Tallyne is not case sensitive which means "HELLO" and "hello" are treated same.
@@ -37,7 +37,8 @@ These command are used for information exchange with Entities
 - `# create "variable_name"` - Create a variable, its default data type will be "VALUE"
 - `# store "value" in (variable)` - Assigning value to variable
 - `# create and store "value" in (variable)` - Create and assign value at the same time
-Whatever task when tallied, if it has a result which is not specifically passed to a Variable, it will by default get stored in a predefined storage space called "it". This helps in the continuity of tasks and refer to previous tasks from later tasks.
+
+When a task is tallied, and its result isn’t explicitly stored, it is automatically saved to a default variable called it.
 - `# store "whatever" in it` - Forcefully stores something into "it"
 - `# store it in (variable)` - Store "it" into another variable
 
