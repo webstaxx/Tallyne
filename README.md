@@ -15,7 +15,6 @@ Designed for clarity, control, and real-world logic—perfect for robotics and a
 - Tallyne is not case sensitive which means "HELLO" and "hello" are treated same.
 - Anything written in `""` is considered as a VALUE as parameter.
 - Anything written in `{}` is refering to a Routine as parameter.
-- Anything written in `<>` is for accepting a TASK as parameter.
 
 ## Code:
 ### Entity (Class/Function/Method):
@@ -59,13 +58,28 @@ When a task is tallied, and its result isn’t explicitly stored, it is automati
 
 Any of these performed independently without being stored into any specific variable, will get stored to "it"
 
-### If-Else:
-Since tasks are single lined, for the ease of Interpreting the code, if.. else if.. Tasks have to be separated into different Routines.
-- `# if (condition) is true, <TASK>` - Checks if a condition is true and performs a TASK depending on it
-- `# if (condition) is true, <check {Routine_true}> else, <check {Routine_false}>` - Checks if a condition is true and calls different Routines depending on it
-- `# if (condition) is false, <check {Routine_true}> else, <check {Routine_false}>` - Checks if a condition is false and calls different Routines depending on it
-Performing an If..Else If can be tricky, you have to put and if TASK in the else part.
-- `# if (condition) is true, <check {Routine_true}> else, <if (condition) is true, <TASK> else, <ANOTHERTASK>` - Checks if a multiple conditions are true
+### If-Else Logic
+
+Tallyne handles conditionals in a two-part structure. 
+
+#### Tallies different tasks based on the Conditon:
+- `# if (condition) is true, task`
+- `# else, another task`
+
+#### Tallies different Routines based on the Conditon:
+- `# if (condition) is true, {routine_if_true}`
+- `# else, {routine_if_false}`
+
+#### If-Else If-Else Ladder
+Use chained conditionals to handle multiple cases:
+- `# if (condition1) is true, {routine1}`
+- `# else if (condition2) is true, {routine2}`
+- `# else, {fallback_routine}`
+
+Only the first true condition's routine will be tallied.  
+All remaining conditions will be skipped once a match is found.
+
+`if` may or may not by followed by `else`.
 
 ### Loops:
 - `# forever <TASK>` - Repeat some task forever
