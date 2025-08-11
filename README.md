@@ -63,8 +63,8 @@ Any of these performed independently without being stored into any specific vari
 Tallyne handles conditionals in a two-part structure. 
 
 #### Tallies different tasks based on the Conditon:
-- `# if (condition) is true, task`
-- `# else, another task`
+- `# if (condition) is true, <task>`
+- `# else, <another task>`
 
 #### Tallies different Routines based on the Conditon:
 - `# if (condition) is true, {routine_if_true}`
