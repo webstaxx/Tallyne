@@ -62,7 +62,25 @@ Eg:
 
 ## Functions / Methods
 
-### `radio` — Set Values Without Running
+### Declaring Functions (Routines):
+
+Rouines are declared with the Header `{NAME_OF_THE_ROUTINE}`.
+Tasks within the routine are written line by line under the Header.
+`<#>` marks the end of the routine.
+
+That is the simplest way to create a Routine, but for it to become a proper Function, it must take in values and output values.
+A routine can take in parameters y modifying the Header to accomodate for them. This is done by using `with` keyword:
+
+```tallyne
+{ADDITION} with "A", "B", "C"
+// (A), (B), and (C) have become parameters of the Routine and can be used inside the routine as normal variables
+? (A) + (B) + (C)
+# store yield in it
+# radio "Addition Complete and reurned value to it" to IO
+```
+
+
+### 
 
 Assigns values to a Routine without executing it. Useful for preparing state before calling with `tally`.
 
