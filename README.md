@@ -119,7 +119,68 @@ Tallyne has a simple variable system.
 ```
 If a task's result isn't explicitly stored, it's automatically saved in a temporary multipurpose variable `it`. It is a core feature of Tallyne.
 
+
+## 📦  Lists (Arrays)
+
+A **List** in Tallyne is an ordered collection of Hybrid Values, enclosed in square brackets `[]`. Lists are stored and referenced using a Variable `()`. Tallyne uses **0-based indexing** for list access (the first item is index `0`).
+
+### 📝 List Declaration
+
+  * **Creating a List (Literal):**
+
+    ```tallyne
+    # store ["red", "green", "blue"] in (colors)
+    ```
+
+  * **Creating an Empty List:**
+
+    ```tallyne
+    # store [] in (readings)
+    ```
+
+### 🛠️ List Management Tasks
+
+Tallyne provides distinct tasks for reading, adding/inserting, updating, and removing list items.
+
+| Task | Syntax | Action |
+| :--- | :--- | :--- |
+| **`# pull`** (Retrieve) | `# pull <index> from (list)` | Retrieves the value at the specified index. Result is stored in **`it`**. |
+| **`# insert`** (Shift/Append) | `# insert <value> at <index> in (list)` | **Inserts** the value at the index, shifting all subsequent items. |
+| **`# insert`** (Append Only) | `# insert <value> into (list)` | **Appends** the value to the very end of the List. |
+| **`# mark`** (Update) | `# mark <value> at <index> in (list)` | **Updates** the existing value at the specified index without changing the list size or order. |
+| **`# cut`** (Remove) | `# cut <index> from (list)` | Removes the item at the index. The removed item's value is stored in **`it`**. |
+
+### 💡 Example Flow
+
+```tallyne
+{LIST_DEMO}
+# store ["apple", "banana", "kiwi"] in (fruits)
+
+// Puts "banana" into 'it'
+# pull 1 from (fruits) 
+# radio it to IO 
+
+// Updates existing item at index 0
+# mark "MANGO" at 0 in (fruits) 
+// (fruits) is now ["MANGO", "banana", "kiwi"]
+
+// Inserts "grape" at index 1, shifting "banana" and "kiwi"
+# insert "grape" at 1 in (fruits) 
+// (fruits) is now ["MANGO", "grape", "banana", "kiwi"]
+
+// Appends "orange" to the end
+# insert "orange" into (fruits) 
+// (fruits) is now ["MANGO", "grape", "banana", "kiwi", "orange"]
+
+// Removes "kiwi" (now at index 3), stores "kiwi" in 'it'
+# cut 3 from (fruits) 
+// (fruits) is now ["MANGO", "grape", "banana", "orange"]
+<#>
+```
+
 ---
+
+
 
 ## Input/Output
 
