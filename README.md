@@ -241,15 +241,17 @@ A Check Task follows the pattern:
 
 These are the valid operators used in a Check Task:
 
-| Operator | Meaning | Example |
-| :---: | :--- | :--- |
-| `=` | Equality (`==`) | `? (a) = (b)` |
-| `!=` | Not Equal (`!=`) | `? (a) != (b)` |
-| `>` | Greater Than (`>`) | `? (a) > (b)` |
-| `<` | Less Than (`<`) | `? (a) < (b)` |
-| `>=` | Greater or Equal (`>=`) | `? (a) >= (b)` |
-| `<=` | Less or Equal (`<=`) | `? (a) <= (b)` |
-| `is empty` | Checks if a variable holds no value (null/unassigned). | `? (user_input) is empty` |
+| Operator | Meaning | Data Type Focus | Example | Action/Note |
+| :---: | :--- | :--- | :--- | :--- |
+| **`=`** | Numerical Equality (`==`) | **Num** | `? (A) = (B)` | Interpreter attempts to convert both operands to numbers before checking if they are equal. |
+| **`!=`** | Numerical Inequality (`!=`) | **Num** | `? (A) != (B)` | Interpreter attempts to convert both operands to numbers before checking if they are unequal. |
+| **`is`** | Identity Equality | **Non-Num / Raw String** | `? (A) is (B)` | Compares the raw, case-insensitive string content of the Hybrid Values. |
+| **`not`** | Identity Inequality | **Non-Num / Raw String** | `? (A) not (B)` | Checks if the raw, case-insensitive string content of the Hybrid Values are *not* identical. |
+| `>` | Greater Than | **Num** | `? (A) > (B)` | Forced Numerical magnitude check. |
+| `<` | Less Than | **Num** | `? (A) < (B)` | Forced Numerical magnitude check. |
+| `>=` | Greater or Equal | **Num** | `? (A) >= (B)` | Forced Numerical magnitude check. |
+| `<=` | Less or Equal | **Num** | `? (A) <= (B)` | Forced Numerical magnitude check. |
+| `is empty` | Checks if a variable holds no value. | N/A | `? (input) is empty` | Checks if the operand is unassigned (null/uninitialized). |
 
 -----
 
