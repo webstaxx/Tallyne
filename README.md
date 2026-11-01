@@ -1,237 +1,348 @@
-# Tallyne 
+# Tallyne
 
-Tallyne is a minimal, task-based language inspired by the structure of a To-Do list. Code is written as single-line tasks under named Routines (functions), then tallied (executed) step by step.
+**Programming, one task at a time.**
 
-It combines the simplicity of Procedural Programming with the modularity of Object-Oriented Programming, letting you treat each system or hardware part as its own entity.
+Tallyne is an experimental esoteric programming language built around a simple idea: what if programming felt like completing a checklist?
 
-Designed for clarity, control, and real-world logic—perfect for robotics and automation.
+Programs are organised into **Routines**, and each instruction is written as a **Task**. Tasks are executed sequentially, one after another, giving Tallyne a straightforward and readable structure.
 
----
-
-## Main Features
-
-* `{NAME}` defines **Routine** (function).
-* Each **task** (a statement) is prefixed with `#` under a Routine.
-* Any line starting with `//` is a **comment**.
-* `<#>` marks the end of the Routine.
-* The `{TASKS}` Routine is executed by default (Main Method)
-* Tallyne is not case sensitive, meaning `HELLO` and `hello` are treated the same.
-* All VALUES are referred within `""`
-* All ROUTUNES are referred within `{}`
-* All VARIABLES are referred within `()`
-* There specific variables in tallyne called key-variables, as they behave like keywords built into tallyne. They can be referred without using parentheses. They are an integral part of Tallyne's data flow
+Tallyne is designed to be approachable, expressive, and fun to experiment with. Its identity lies in its syntax and programming experience rather than solving a particular real-world problem.
 
 ---
 
-## Entities
+## 1. Language Fundamentals
 
-Entities are similar to objects (although not exactly like the Objects you see in OOP). They are the principal dealers of data and also essential components of Tallyne's Procedure structure.
+A few conventions form the foundation of Tallyne:
 
-Example entities:
+| Syntax | Purpose |
+|---|---|
+| `{NAME}` | Declares or references a Routine |
+| `#` | Prefix for an Action Task |
+| `$` | Prefix for an Arithmetic Task |
+| `?` | Prefix for a Check Task |
+| `//` | Begins a comment |
+| `# ***` | Terminates a Routine |
+| `(variable)` | References a variable |
+| `"value"` | Represents a literal value |
+| `[ ]` | Represents a List |
 
-* `{TASKS}` - Main Routine (entry point)
-* `{Routine_name}` - Any custom-defined Routine
-* `IO` - Input/output  (SYSTEM ENTITY)
+### Basic Rules
 
-Any connected hardware components can be treated as Entities with the requied plugins, eg:
-* `LeftMotor`
-* `IRSensor`
-* `Camera` etc..
-
-Entities can be classified into two based on their State:
-* Alive Entities - They are active the entire time while a program runs. Usually System Entities.
-* Idle Entities - They are not active unless that entity is called for. User-defined Entities usually fall in this cateory.
-
----
-## Data Flow
-Introducing first Key-Variable, **it**:
-`it` stores the output of corresponding previous operations. This is an essential feature of data flow.
-
-Tallyne passes information between routines and entities using the following:
-- `# radio <information> to <reciever>` - Broadcasts data to an entity (It has a lot of uses)
-- `# query <someone> with <query>` - Requests some entity for data.
-
-Eg:
-```tallyne
-// Code to input name and then display it back
-# query IO with "What is your name?"
-# radio it to IO
-```
+- Tallyne is case-insensitive. `HELLO` and `hello` are treated identically.
+- Every program begins execution from the `{TASKS}` Routine.
+- Tasks execute sequentially, from top to bottom.
+- A Routine must be declared before it is called.
+- Variables are local to their respective Routines, while certain system variables are shared globally.
 
 ---
 
-## Functions / Methods
+## 2. Routines
 
-### Declaring Functions (Routines):
+Routines are the fundamental organisational units of Tallyne. They group Tasks together into reusable sequences of instructions.
 
-Rouines are declared with the Header `{NAME_OF_THE_ROUTINE}`.
-Tasks within the routine are written line by line under the Header.
-`<#>` marks the end of the routine.
+### Declaring a Routine
 
-That is the simplest way to create a Routine, but for it to become a proper Function, it must take in values and output values.
-A routine can take in parameters y modifying the Header to accomodate for them. This is done by using `with` keyword:
+A Routine is declared using curly braces:
 
 ```tallyne
-{ADDITION} with "A", "B", "C"
-// (A), (B), and (C) have become parameters of the Routine and can be used inside the routine as normal variables
-? (A) + (B) + (C)
-# store yield in it
-# radio "Addition Complete and reurned value to it" to IO
-<#>
+{GREETING}
+    # radio "Hello World" to IO
+# ***
 ```
 
+`# ***` marks the end of the current Routine.
 
-### 
+The `{TASKS}` Routine is the program's default entry point. When it reaches `# ***`, program execution ends.
 
-Assigns values to a Routine without executing it. Useful for preparing state before calling with `tally`.
+### Routine Parameters
+
+Routines can accept parameters through the `with` keyword.
 
 ```tallyne
-# radio "value1", "value2" to {Routine}
+{ADDITION} with (A), (B)
+    $ (A) + (B)
+    # return yield
+# ***
 ```
 
-There are two ways to invoke a Routine in Tallyne:
+Parameters behave like local variables and can be accessed inside the Routine.
 
-### `tally` — Run With Existing Values
+### Calling Routines
 
-Executes a Routine with whatever values it already has (set earlier using `radio` or defaults).
+Tallyne provides three ways to interact with a Routine.
+
+#### `radio` — Assign Values
+
+`radio` sends information to a Routine without executing it.
 
 ```tallyne
-# tally {Routine}
+# radio "Hello", "World" to {GREETING}
 ```
 
-### `prompt` — Pass Values and Run Immediately
+Values are assigned positionally, following the order in which parameters were declared.
 
-Passes values to a Routine **and** executes it immediately. Cannot be used without parameters.
+Sending another `radio` instruction overwrites the previously assigned parameter values, starting from the first parameter.
+
+#### `tally` — Execute
+
+`tally` executes a Routine using its currently assigned parameter values.
 
 ```tallyne
-# prompt {Routine} with "value1", "value2"  // Executes right away
+# tally {GREETING}
 ```
 
-> Using `# prompt {Routine}` without parameters results in error: `Empty Prompt`.
+The existing parameter values are retained after execution.
+
+#### `prompt` — Assign and Execute
+
+`prompt` supplies parameter values and immediately executes the Routine.
+
+```tallyne
+# prompt {GREETING} with "Hello", "World"
+```
+
+Unlike `radio`, `prompt` resets the Routine's parameter values before assigning the supplied values.
+
+Missing arguments are permitted and receive NULL values. Extra arguments are ignored.
+
+Using `prompt` without supplying parameters results in an `Empty Prompt` error.
+
+### Routine Behaviour
+
+- Routines can call other Routines.
+- Recursion is supported.
+- Routine declarations cannot be nested inside other Routines.
+- Each Routine maintains its own local variables.
+- Calling another Routine does not erase the caller's local variables.
+- The global variables `it`, `yield`, and `call` are shared between Routines.
 
 ---
 
-## Storage
-Tallyne has a simple variable system.
+## 3. Entities
+
+Entities are components that participate in Tallyne's data flow. They are somewhat analogous to objects in conventional programming languages, although they do not follow exactly the same model.
+
+Examples include:
+
+- `IO` — Input and output.
+- `LeftMotor` — A motor Entity.
+- `IRSensor` — An infrared sensor Entity.
+- `Camera` — A camera Entity.
+
+Entities can be classified according to their state:
+
+**Alive Entities**
+
+Remain active throughout program execution. System Entities such as `IO` belong to this category.
+
+**Idle Entities**
+
+Remain inactive until explicitly called upon. User-defined Entities generally belong to this category.
+
+Entities and Routines serve different purposes: Routines organise program instructions, while Entities provide access to external components and operations.
+
+---
+
+## 4. Data Flow
+
+Tallyne uses three special global variables, called **Key Variables**, to manage information between Tasks and Routines.
+
+| Key Variable | Purpose |
+|---|---|
+| `it` | Holds general operation results and returned values |
+| `yield` | Holds the result of an Arithmetic Task |
+| `call` | Holds the result of a Check Task |
+
+These variables can be referenced without parentheses.
+
+### `it`
+
+`it` is Tallyne's general-purpose data variable. It is used to hold values returned by operations and Routines.
+
+For example:
+
 ```tallyne
-# store "value" in (variable)              // Declares and initializes a variable with "value"
-# store it in (variable)                   // Updates variable's value to the data in 'it'
+{CALCULATE}
+    $ 10 + 20
+    # return yield
+# ***
+
+{TASKS}
+    # tally {CALCULATE}
+    # radio it to IO
+# ***
 ```
-If a task's result isn't explicitly stored, it's automatically saved in a temporary multipurpose variable `it`. It is a core feature of Tallyne.
 
+### `yield`
 
-## 📦  Lists (Arrays)
+`yield` stores the result of the most recently executed Arithmetic Task.
 
-A **List** in Tallyne is an ordered collection of Hybrid Values, enclosed in square brackets `[]`. Lists are stored and referenced using a Variable `()`. Tallyne uses **0-based indexing** for list access (the first item is index `0`).
+### `call`
 
-### 📝 List Declaration
+`call` stores the result of the most recently executed Check Task. It is used by conditional Action Tasks to determine program flow.
 
-  * **Creating a List (Literal):**
+---
 
-    ```tallyne
-    # store ["red", "green", "blue"] in (colors)
-    ```
+## 5. Storage and Variables
 
-  * **Creating an Empty List:**
+Variables are declared and referenced using parentheses.
 
-    ```tallyne
-    # store [] in (readings)
-    ```
+```tallyne
+# store "Hello" in (message)
+# store it in (result)
+```
 
-### 🛠️ List Management Tasks
+The first instruction stores a literal value. The second stores the current value of `it`.
 
-Tallyne provides distinct tasks for reading, adding/inserting, updating, and removing list items.
+Every variable exists in a NULL state until it receives a value. Tallyne does not use a conventional uninitialised-variable state.
 
-| Task | Syntax | Action |
-| :--- | :--- | :--- |
-| **`# pull`** (Retrieve) | `# pull <index> from (list)` | Retrieves the value at the specified index. Result is stored in **`it`**. |
-| **`# insert`** (Shift/Append) | `# insert <value> at <index> in (list)` | **Inserts** the value at the index, shifting all subsequent items. |
-| **`# insert`** (Append Only) | `# insert <value> into (list)` | **Appends** the value to the very end of the List. |
-| **`# mark`** (Update) | `# mark <value> at <index> in (list)` | **Updates** the existing value at the specified index without changing the list size or order. |
-| **`# cut`** (Remove) | `# cut <index> from (list)` | Removes the item at the index. The removed item's value is stored in **`it`**. |
+NULL can behave differently depending on the context in which it is used.
 
-### 💡 Example Flow
+For example, NULL is treated as zero during arithmetic operations.
+
+Variables are local to their Routine. The three Key Variables are global.
+
+---
+
+## 6. Lists
+
+A List is an ordered collection of values enclosed in square brackets.
+
+Tallyne uses **zero-based indexing**, meaning the first element is at index `0`.
+
+### Creating Lists
+
+```tallyne
+// Creating a populated List
+# store ["red", "green", "blue"] in (colors)
+
+// Creating an empty List
+# store [] in (readings)
+```
+
+### List Management
+
+| Task | Syntax | Behaviour |
+|---|---|---|
+| Pull | `# pull 1 from (colors)` | Retrieves an element into `it` |
+| Insert at | `# insert "yellow" at 1 in (colors)` | Inserts an element at an index |
+| Insert into | `# insert "yellow" into (colors)` | Appends an element |
+| Mark | `# mark "yellow" at 1 in (colors)` | Replaces an existing element |
+| Cut | `# cut 1 from (colors)` | Removes an element and stores it in `it` |
+
+### Example
 
 ```tallyne
 {LIST_DEMO}
-# store ["apple", "banana", "kiwi"] in (fruits)
+    # store ["apple", "banana", "kiwi"] in (fruits)
 
-// Puts "banana" into 'it'
-# pull 1 from (fruits) 
-# radio it to IO 
+    # pull 1 from (fruits)
+    # radio it to IO
 
-// Updates existing item at index 0
-# mark "MANGO" at 0 in (fruits) 
-// (fruits) is now ["MANGO", "banana", "kiwi"]
+    # mark "MANGO" at 0 in (fruits)
+    # insert "grape" at 1 in (fruits)
+    # insert "orange" into (fruits)
 
-// Inserts "grape" at index 1, shifting "banana" and "kiwi"
-# insert "grape" at 1 in (fruits) 
-// (fruits) is now ["MANGO", "grape", "banana", "kiwi"]
-
-// Appends "orange" to the end
-# insert "orange" into (fruits) 
-// (fruits) is now ["MANGO", "grape", "banana", "kiwi", "orange"]
-
-// Removes "kiwi" (now at index 3), stores "kiwi" in 'it'
-# cut 3 from (fruits) 
-// (fruits) is now ["MANGO", "grape", "banana", "orange"]
-<#>
+    # cut 3 from (fruits)
+# ***
 ```
 
 ---
 
+## 7. Communication and Input/Output
 
+Tallyne uses two principal instructions for communication:
 
-## Input/Output
+### `radio`
+
+Sends information to an Entity or Routine.
 
 ```tallyne
 # radio "Hello World" to IO
-# query IO with "What is your name"    // Stores input in `it`
 ```
-> Note: `prompt` is not required for output as IO is an ALIVE entity and will execute by `radio` alone. The two could be used interchangeably in the case of ALIVE entities.
 
-## Mathematical Operations
+When directed to `IO`, the output is produced immediately because `IO` is an Alive Entity.
 
-Tallyne has built in SIMPLE commands to perform mathematical Operations on 2 variables.
+### `query`
+
+Requests information from an Entity.
 
 ```tallyne
-# add (num1), (num2)                    // Sum
-# subtract (num1), (num2)               // Subtract sequentially
-# multiply (num1), (num2)               // Multiply sequentially
-# divide (num1), (num2)                 // Quotient
-# modulus (num1), (num2)                // Remainder
+# query IO with "What is your name?"
 ```
-The reselt will be saved in `it`.
 
-Tallyne has a more abstract way of handling arithmetic, which will be used for more complicated tasks:
-Instead of the normal TASK prefix `#`, a prefix `$` is used to specify an Arithmetic Task. It will compute a Mathematical Expression by following PEMDAS and stores the result in the key-variable `yield`, similar to the variable `it` but only for mathematical purposes.
+The response is stored in `it`.
 
-Example code:
-```tallyne
-$ 4*4 + (12+3) * 10             // Arithmetic Expression, follows PEMDAS
-# store yield in (sum)          // Stores the result of the Expression in a variable
-# radio (sum) to IO             // Outputs 166
-```
----
-
-## Loops
+For example, a program can request a sensor reading:
 
 ```tallyne
-# forever <TASK>                      // Infinite loop
-# while (condition) do <TASK>         // Repeat until condition is false
+# query IRSensor with "distance"
+# store it in (distance)
 ```
+
+`query` is intended for requesting information from Entities, rather than invoking Routines.
 
 ---
 
-## Conditionals
+## 8. Arithmetic
 
-Tallyne uses a distinct prefix, `?`, for **Check Tasks** (conditionals).
+Tallyne uses the `$` prefix to identify Arithmetic Tasks.
 
-A Check Task evaluates a single condition and immediately stores the boolean result (`TRUE` or `FALSE`) into the dedicated system variable, **`call`**. This variable is then used by the `# if` Action Tasks to control the program flow.
+An Arithmetic Task evaluates a mathematical expression according to the standard order of operations (**PEMDAS**) and stores the result in `yield`.
 
-### Check Task Syntax
+```tallyne
+{CALCULATE}
+    $ 4 * 4 + (12 + 3) * 10
+    # radio yield to IO
+# ***
+```
 
-A Check Task follows the pattern:
+Output:
+
+```text
+166
+```
+
+### Arithmetic Behaviour
+
+- Standard mathematical precedence is followed.
+- NULL values are treated as zero.
+- Numeric strings are converted for arithmetic calculations.
+- The calculated result is stored in `yield` as a string.
+
+Arithmetic is handled through expressions rather than separate addition, subtraction, multiplication, division, or modulus Tasks.
+
+---
+
+## 9. Loops
+
+Tallyne provides two basic loop structures.
+
+### Forever
+
+Repeats a Task indefinitely.
+
+```tallyne
+# forever <TASK>
+```
+
+### While
+
+Repeats a Task while a condition remains true.
+
+```tallyne
+# while (condition) do <TASK>
+```
+
+---
+
+## 10. Conditionals
+
+Tallyne uses the `?` prefix to define a **Check Task**.
+
+A Check Task evaluates a condition and stores its result in the global Key Variable `call`.
+
+### Syntax
 
 ```tallyne
 ? (operand1) <operator> (operand2)
@@ -239,56 +350,92 @@ A Check Task follows the pattern:
 
 ### Check Operators
 
-These are the valid operators used in a Check Task:
+| Operator | Meaning | Behaviour |
+|---|---|---|
+| `=` | Numerical equality | Compares operands numerically |
+| `!=` | Numerical inequality | Checks numerical inequality |
+| `is` | Identity equality | Compares raw values, ignoring case |
+| `not` | Identity inequality | Checks whether raw values differ |
+| `>` | Greater than | Numerical comparison |
+| `<` | Less than | Numerical comparison |
+| `>=` | Greater than or equal | Numerical comparison |
+| `<=` | Less than or equal | Numerical comparison |
+| `is empty` | NULL check | Checks whether an operand contains NULL |
 
-| Operator | Meaning | Data Type Focus | Example | Action/Note |
-| :---: | :--- | :--- | :--- | :--- |
-| **`=`** | Numerical Equality (`==`) | **Num** | `? (A) = (B)` | Interpreter attempts to convert both operands to numbers before checking if they are equal. |
-| **`!=`** | Numerical Inequality (`!=`) | **Num** | `? (A) != (B)` | Interpreter attempts to convert both operands to numbers before checking if they are unequal. |
-| **`is`** | Identity Equality | **Non-Num / Raw String** | `? (A) is (B)` | Compares the raw, case-insensitive string content of the Hybrid Values. |
-| **`not`** | Identity Inequality | **Non-Num / Raw String** | `? (A) not (B)` | Checks if the raw, case-insensitive string content of the Hybrid Values are *not* identical. |
-| `>` | Greater Than | **Num** | `? (A) > (B)` | Forced Numerical magnitude check. |
-| `<` | Less Than | **Num** | `? (A) < (B)` | Forced Numerical magnitude check. |
-| `>=` | Greater or Equal | **Num** | `? (A) >= (B)` | Forced Numerical magnitude check. |
-| `<=` | Less or Equal | **Num** | `? (A) <= (B)` | Forced Numerical magnitude check. |
-| `is empty` | Checks if a variable holds no value. | N/A | `? (input) is empty` | Checks if the operand is unassigned (null/uninitialized). |
-
------
-
-### Task-Based Control Flow
-
-The `call` variable is then used in standard `# if` structures to determine which routine to execute or which task to run.
-
-#### Single Condition
+### Example: Basic Conditional
 
 ```tallyne
 ? (current_fuel) < "10"
+
 # if call is true, radio "Low fuel" to IO
 # else, radio "Fuel level OK" to IO
 ```
 
-#### Routine Ladder Example
+### Example: Routine Ladder
 
 ```tallyne
 {CHECK_MOTOR_SPEED}
-? (speed) = "0"
-# if call is true, {MOTOR_IS_STOPPED}
+    ? (speed) = "0"
+    # if call is true, {MOTOR_IS_STOPPED}
 
-? (speed) > "50"
-# if call is true, {MOTOR_IS_FAST}
+    ? (speed) > "50"
+    # if call is true, {MOTOR_IS_FAST}
 
-# else, {MOTOR_IS_NORMAL}
-<#>
+    # else, {MOTOR_IS_NORMAL}
+# ***
 ```
 
------
-
-###  Key System Variables Review
-
-| Variable | Prefix/Used With | Purpose | 
-| :---: | :--- | :--- | 
-| `it` | `#` (Action Tasks) | Stores the output or temporary value of the most recent Action Task. | 
-| `yield` | `$` (Math Tasks) | Stores the numerical result of the most recent Arithmetic Task | 
-| `call` | `?` (Check Tasks) | Stores the boolean result (`TRUE` / `FALSE`) of the most recent Check Task. |
+The `call` variable is updated whenever a Check Task is executed.
 
 ---
+
+## 11. Comments
+
+Comments begin with `//`.
+
+They are ignored during program execution and can be used to document code.
+
+```tallyne
+// This is a comment
+
+{TASKS}
+    # radio "Hello World" to IO
+# ***
+```
+
+---
+
+## 12. A Complete Example
+
+The following program demonstrates Routine declarations, parameters, arithmetic, storage, and communication.
+
+```tallyne
+{ADDITION} with (A), (B)
+    $ (A) + (B)
+    # return yield
+# ***
+
+{TASKS}
+    # prompt {ADDITION} with "25", "75"
+
+    # radio "The result is:" to IO
+    # radio it to IO
+# ***
+```
+
+Expected output:
+
+```text
+The result is:
+100
+```
+
+---
+
+## Project Status
+
+Tallyne is an experimental language under active development.
+
+Its syntax, execution model, and interpreter are being developed together. Some language behaviours and implementation details remain subject to refinement.
+
+**Tallyne — Programming, one task at a time.**
