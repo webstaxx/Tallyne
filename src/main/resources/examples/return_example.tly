@@ -1,0 +1,9 @@
+{DEMO} with (X)
+    $ (X) * 2
+    # return yield
+# ***
+
+{TASKS}
+    # prompt {DEMO} with "20"
+    # radio it to IO
+# ***

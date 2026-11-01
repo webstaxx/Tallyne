@@ -1,0 +1,12 @@
+{TASKS}
+    # store ["red","green","blue"] in (colors)
+
+    # pull 0 from (colors)
+    # radio it to IO
+
+    # mark "yellow" at 0 in (colors)
+    # insert "purple" at 1 in (colors)
+    # insert "orange" into (colors)
+
+    # cut 2 from (colors)
+# ***

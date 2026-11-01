@@ -1,0 +1,11 @@
+{ADDITION} with (A), (B)
+    $ (A) + (B)
+    # return yield
+# ***
+
+{TASKS}
+    # prompt {ADDITION} with "25", "75"
+
+    # radio "The result is:" to IO
+    # radio it to IO
+# ***

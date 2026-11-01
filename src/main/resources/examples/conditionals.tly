@@ -1,0 +1,8 @@
+{TASKS}
+    ? (x) > "5"
+    # if call is true, radio "Greater" to IO
+    # else, radio "Not greater" to IO
+
+    ? (y) = "10"
+    # if call is true, radio "Equal" to IO
+# ***
